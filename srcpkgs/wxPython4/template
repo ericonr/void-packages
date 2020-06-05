@@ -1,7 +1,7 @@
 # Template file for 'wxPython4'
 pkgname=wxPython4
-version=4.0.6
-revision=3
+version=4.1.0
+revision=1
 wrksrc="wxPython-${version}"
 build_style=python3-module
 pycompile_module="wx"
@@ -16,11 +16,13 @@ maintainer="Jasper Chan <jasperchan515@gmail.com>"
 license="custom:wxWindows"
 homepage="http://www.wxpython.org/"
 distfiles="${PYPI_SITE}/w/wxPython/wxPython-${version}.tar.gz"
-checksum=35cc8ae9dd5246e2c9861bb796026bbcb9fb083e4d49650f776622171ecdab37
+checksum=2e2475cb755ac8d93d2f9335c39c060b4d17ecb5d4e0e86626d1e2834b64a48b
 
 if [ "$CROSS_BUILD" ]; then
 	CFLAGS+=" -I${XBPS_CROSS_BASE}/usr/include/python${py3_ver}"
 fi
+
+export WX_CONFIG=wx-config-gtk3
 
 pre_build() {
 	chmod -R go+rX $wrksrc
