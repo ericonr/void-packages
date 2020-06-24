@@ -1,0 +1,46 @@
+# Template file for 'dbus-broker'
+pkgname=dbus-broker
+version=22
+revision=1
+_rbtree_git=fa97402c3faa18c2ddd8325eb66e2bd58a224477
+_dvar_git=9e1a5b4363aaece7169df2b2852944a1434b2df5
+_ini_git=43f379396a320940d0661c15780f618f84d29348
+_list_git=b1cd4dbf967d73b24dfe6cc56aaf3fdd668692e3
+_shquote_git=1d171fe52c23944c3c0be1f2603595f2488a9ff8
+_stdaux_git=d6ecce8afbb7703e1469cc5e7a59a8bd32e2d4a4
+_utf8_git=1f7e2ff1164bd2161cb480532b2b34cb2074bde1
+build_style=meson
+configure_args=" -Daudit=true -Dlauncher=true -Ddocs=true"
+hostmakedepends="pkg-config python3-docutils"
+makedepends="libaudit-devel libcap-ng-devel expat-devel elogind-devel"
+depends=""
+short_desc="Linux D-Bus Message Broker"
+maintainer="Érico Rolim <erico.rolim@tarvos.ag>"
+license="Apache-2.0"
+homepage="https://github.com/bus1/dbus-broker"
+distfiles="https://github.com/bus1/dbus-broker/archive/v${version}.tar.gz
+https://github.com/c-util/c-rbtree/archive/${_rbtree_git}.tar.gz>c-rbtree.tar.gz
+https://github.com/c-util/c-dvar/archive/${_dvar_git}.tar.gz>c-dvar.tar.gz
+https://github.com/c-util/c-ini/archive/${_ini_git}.tar.gz>c-ini.tar.gz
+https://github.com/c-util/c-list/archive/${_list_git}.tar.gz>c-list.tar.gz
+https://github.com/c-util/c-shquote/archive/${_shquote_git}.tar.gz>c-shquote.tar.gz
+https://github.com/c-util/c-stdaux/archive/${_stdaux_git}.tar.gz>c-stdaux.tar.gz
+https://github.com/c-util/c-utf8/archive/${_utf8_git}.tar.gz>c-utf8.tar.gz"
+checksum="819de1f11dab34922db432819bb41089368f2abbb90fedfd69a6d3e24d84258c
+2bcc1e92fc42a16f2d31dc18f6cd9b767206161bcb542e355fcc2ffa5e96c10d
+2c8bf2370d96fb590a906d65d85f6e3173b97d03c8c752c0e0f7cd6d5f3ab03b
+516e368e55777922b12831411e3097866b92803bdc03a6f8e4087f2266731b2c
+b474962e408236555aa616cdb41bebd1baf08a2962c7c6c78058c7909752732d
+6088a4d99eaa112a259ec14bdee0f375e7ee33c4c55a89fb2854f6c923394e25
+d0a4cc46d65937889cc7a779072e77ead64b3f4216d5a7ebf332855b5c6569a5
+46ab9d6db01d7ef080d1a8ae1366cd05c911f2e296a2044d4b6316290c4d7170"
+
+pre_configure() {
+	cp -r ../c-rbtree-${_rbtree_git}/* subprojects/c-rbtree/
+	cp -r ../c-dvar-${_dvar_git}/* subprojects/c-dvar/
+	cp -r ../c-ini-${_ini_git}/* subprojects/c-ini/
+	cp -r ../c-list-${_list_git}/* subprojects/c-list/
+	cp -r ../c-shquote-${_shquote_git}/* subprojects/c-shquote/
+	cp -r ../c-stdaux-${_stdaux_git}/* subprojects/c-stdaux/
+	cp -r ../c-utf8-${_utf8_git}/* subprojects/c-utf8/
+}
