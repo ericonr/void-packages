@@ -1,0 +1,19 @@
+# Template file for 'OpenDiablo2'
+pkgname=OpenDiablo2
+version=0.0.0
+_commit=7bf646b4357687a9ed77171f4f0f843114bfe298
+revision=1
+wrksrc=${pkgname}-${_commit}
+build_style=go
+go_import_path="github.com/OpenDiablo2/OpenDiablo2"
+#go_get=yes
+hostmakedepends="git pkg-config"
+makedepends="libX11-devel libXcursor-devel libXrandr-devel libXinerama-devel
+ libXi-devel MesaLib-devel alsa-lib-devel SDL2-devel"
+depends=""
+short_desc="Open source re-implementation of Diablo 2"
+maintainer="Érico Nogueira <ericonr@disroot.org>"
+license="GPL-3.0-or-later"
+homepage="https://opendiablo2.com/"
+distfiles="https://github.com/OpenDiablo2/OpenDiablo2/archive/${_commit}.tar.gz"
+checksum=24d5b63fc82d7b4c03893d010d4d4dcb350e7ab22d2640b33dd2a3d08472ff1b
