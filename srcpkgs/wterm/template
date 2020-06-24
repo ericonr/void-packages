@@ -1,0 +1,19 @@
+# Template file for 'wterm'
+pkgname=wterm
+version=0.0.0
+_commit=18864b6da06f70a98e01d3e429287e54ef8db833
+revision=1
+build_style=gnu-makefile
+hostmakedepends="pkg-config git"
+makedepends="fontconfig-devel wayland-devel libxkbcommon-devel pixman-devel
+ libdrm-devel"
+short_desc="Xterm for Wayland"
+maintainer="Érico Nogueira <ericonr@disroot.org>"
+license="GPL-3.0-or-later"
+homepage="https://github.com/majestrate/wterm"
+
+do_fetch() {
+    git clone "${homepage}" "${wrksrc}"
+    cd "${wrksrc}"
+    git checkout "${_commit}"
+}
