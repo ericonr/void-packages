@@ -9,7 +9,7 @@ maintainer="Andrew Benson <abenson+void@gmail.com>"
 license="custom:NVIDIA Proprietary"
 homepage="https://www.nvidia.com/en-us/drivers/unix/"
 
-archs="x86_64"
+archs="x86_64*"
 nopie=yes
 repository="nonfree"
 create_wrksrc=yes
@@ -21,12 +21,19 @@ _pkg="NVIDIA-Linux-x86_64-${version}"
 distfiles="http://uk.download.nvidia.com/XFree86/Linux-x86_64/${version}/${_pkg}.run"
 checksum=51acf579d5a9884f573a1d3f522e7fafa5e7841e22a9cec0b4bbeae31b0b9733
 # subpackages need to be processed in this specific order
-subpackages="nvidia-gtklibs nvidia-dkms nvidia-firmware nvidia-opencl nvidia-libs nvidia-libs-32bit"
+subpackages="nvidia-dkms nvidia-firmware nvidia-opencl nvidia-libs"
 depends="nvidia-libs-${version}_${revision}
- nvidia-gtklibs-${version}_${revision}
  nvidia-dkms-${version}_${revision}
  nvidia-firmware-${version}_${revision}"
 patch_args="-Np1 --directory=${XBPS_BUILDDIR}/${pkgname}-${version}/${_pkg}"
+
+if [ "$XBPS_TARGET_LIBC" = glibc ]; then
+	subpackages+=" nvidia-gtklibs nvidia-libs-32bit"
+	depends+=" nvidia-gtklibs-${version}_${revision}"
+elif [ "$XBPS_TARGET_LIBC" = musl ]; then
+	hostmakedepends+=" gcompat"
+	noverifyrdeps=yes
+fi
 
 _install_libs() {
 	local libdir=$1
@@ -276,9 +283,14 @@ do_install() {
 
 	# Libraries (64bit)
 	_install_libs usr/lib
-	cd 32
-	# Libraries (32bit)
-	_install_libs usr/lib32
+	if [ "${subpackages}" != "*nvidia-gtklibs*" ]; then
+		rm -f "$DESTDIR/usr/lib/lib*gtk*.so*"
+	fi
+	if [ "${subpackages}" = "*nvidia-libs-32bit*" ]; then
+		cd 32
+		# Libraries (32bit)
+		_install_libs usr/lib32
+	fi
 }
 
 nvidia-gtklibs_package() {
@@ -305,6 +317,9 @@ nvidia-libs_package() {
 	depends="libglvnd"
 	nostrip_files="gsp.bin"
 	conflicts="nvidia470-libs>=0 nvidia390-libs>=0"
+	if [ "$XBPS_TARGET_LIBC" = musl ]; then
+		noverifyrdeps=yes
+	fi
 	pkg_install() {
 		vmove usr/lib
 	}
@@ -328,6 +343,9 @@ nvidia-opencl_package() {
 	short_desc="${_desc} - OpenCL implementation"
 	depends="ocl-icd"
 	conflicts="nvidia470-opencl>=0 nvidia390-opencl>=0"
+	if [ "$XBPS_TARGET_LIBC" = musl ]; then
+		noverifyrdeps=yes
+	fi
 	pkg_install() {
 		vmove "usr/lib/libnvidia-opencl*"
 		vmove etc/OpenCL
