@@ -40,6 +40,41 @@ do_patch() {
 				;;
 		esac
 
+
+		case "$XBPS_TARGET_MACHINE" in
+			x86_64*) _CMAKE_SYSTEM_PROCESSOR=x86_64 ;;
+			i686*) _CMAKE_SYSTEM_PROCESSOR=x86 ;;
+			aarch64*) _CMAKE_SYSTEM_PROCESSOR=aarch64 ;;
+			arm*) _CMAKE_SYSTEM_PROCESSOR=arm ;;
+			mips*) _CMAKE_SYSTEM_PROCESSOR=mips ;;
+			ppc64le*) _CMAKE_SYSTEM_PROCESSOR=ppc64le ;;
+			ppc64*) _CMAKE_SYSTEM_PROCESSOR=ppc64 ;;
+			ppcle*) _CMAKE_SYSTEM_PROCESSOR=ppcle ;;
+			ppc*) _CMAKE_SYSTEM_PROCESSOR=ppc ;;
+			*) _CMAKE_SYSTEM_PROCESSOR=generic ;;
+		esac
+		if [ -x "${XBPS_CROSS_BASE}/usr/bin/wx-config-gtk3" ]; then
+			wx_config=wx-config-gtk3
+		fi
+		cat > cross_${XBPS_CROSS_TRIPLET}.cmake <<_EOF
+SET(CMAKE_SYSTEM_NAME Linux)
+SET(CMAKE_SYSTEM_VERSION 1)
+
+SET(CMAKE_C_COMPILER   ${CC})
+SET(CMAKE_CXX_COMPILER ${CXX})
+SET(CMAKE_CROSSCOMPILING TRUE)
+
+SET(CMAKE_SYSTEM_PROCESSOR ${_CMAKE_SYSTEM_PROCESSOR})
+
+SET(CMAKE_FIND_ROOT_PATH  ${XBPS_CROSS_BASE})
+
+SET(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+SET(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+
+SET(wxWidgets_CONFIG_EXECUTABLE ${XBPS_WRAPPERDIR}/${wx_config:=wx-config})
+_EOF
+
 		# Record cross-compiling information in cross file.
 		# CFLAGS and LDFLAGS must be set as c_args and c_link_args.
 		cat > ${meson_crossfile} <<EOF
@@ -53,6 +88,8 @@ strip = '${STRIP}'
 readelf = '${READELF}'
 objcopy = '${OBJCOPY}'
 pkgconfig = '${PKG_CONFIG}'
+cmake = 'cmake'
+cmake_args=['-T', 'cross_${XBPS_CROSS_TRIPLET}.cmake']
 rust = ['rustc', '--target', '${RUST_TARGET}' ,'--sysroot', '${XBPS_CROSS_BASE}/usr']
 g-ir-scanner = '${XBPS_CROSS_BASE}/usr/bin/g-ir-scanner'
 g-ir-compiler = '${XBPS_CROSS_BASE}/usr/bin/g-ir-compiler'
