@@ -1,17 +1,18 @@
 # Template file for 'pocketsphinx'
 pkgname=pocketsphinx
-version=0.8
-revision=5
+version=5prealpha
+revision=1
 short_desc="Lightweight speech recognition system"
 maintainer="Martin Riese <grauehaare@gmx.de>"
 license="GPL-2"
 homepage="http://cmusphinx.sourceforge.net"
 distfiles="${SOURCEFORGE_SITE}/cmusphinx/${pkgname}/${version}/${pkgname}-${version}.tar.gz"
-checksum="874c4c083d91c8ff26a2aec250b689e537912ff728923c141c4dac48662cce7a"
+checksum=ef5bb5547e2712bdf571f256490ef42a47962033892efd9d7df8eed7fe573ed9
 build_style=gnu-configure
 configure_args="--disable-static --without-python"
 hostmakedepends="pkg-config"
-makedepends="sphinxbase-devel pulseaudio-devel libsndfile-devel libsamplerate-devel"
+makedepends="sphinxbase-devel pulseaudio-devel libsndfile-devel
+ libsamplerate-devel gstreamer1-devel gst-plugins-base1-devel"
 
 libpocketsphinx_package() {
 	short_desc+=" - runtime libraries"
