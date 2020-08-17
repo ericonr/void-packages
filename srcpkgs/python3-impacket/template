@@ -1,0 +1,24 @@
+# Template file for 'python3-impacket'
+pkgname=python3-impacket
+version=0.9.21
+revision=1
+wrksrc=impacket-${version}
+build_style=python3-module
+hostmakedepends="python3-setuptools"
+depends="python3-pyasn1 python3-openssl python3-six"
+checkdepends="${depends}"
+short_desc="Collection of Python classes for working with network protocols"
+maintainer="Érico Nogueira <ericonr@disroot.org>"
+license="custom:Apache-like"
+homepage="https://www.secureauth.com/labs/open-source-tools/impacket"
+distfiles="https://github.com/SecureAuthCorp/impacket/releases/download/impacket_${version//./_}/impacket-${version}.tar.gz"
+checksum=912f812564e87c31a162cfe0626f3a6cbc5b6864deedbfefc31f6d321859ade3
+
+pre_configure() {
+    # remove ntlmrelayx.py deps
+    vsed -i -e '/ldapdomaindump/d;/ldap3/d;/flask/d' requirements.txt
+}
+
+post_install() {
+    vlicense LICENSE
+}
