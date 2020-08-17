@@ -1,0 +1,15 @@
+# Template file for 'kaylee'
+pkgname=kaylee
+version=0.1.1
+revision=1
+arch=noarch
+wrksrc=${pkgname}
+build_style=python3-module
+hostmakedepends="python3-setuptools"
+depends="python3-gobject python3-requests pocketsphinx gstreamer1"
+short_desc="Somewhat fancy voice command recognition software"
+maintainer="Érico Nogueira <ericonr@disroot.org>"
+license="GPL-3.0-or-later"
+homepage="https://git.clarahobbs.com/clara/kaylee"
+distfiles="${homepage}/archive/v${version}.tar.gz"
+checksum=d33705a6a4e59f3cc103ccb34ab0f0ec46cc2cc73affd9ae600bf9d6ed5b4326
