@@ -1,0 +1,137 @@
+diff --git a/bootstrap.sh b/bootstrap.sh
+index a2006624..43ab0b52 100755
+--- gprbuild-community-2019/bootstrap.sh
++++ gprbuild-community-2019/bootstrap.sh
+@@ -1,30 +1,27 @@
+-#!/bin/sh
++#!/bin/sh --
+ # bootstrap.sh - a simple bootstrap for building gprbuild with xmlada
+ 
+ progname=bootstrap
+ 
+ prefix=/usr/local
+-bindir=/bin
+-datarootdir=/share
+-libexecdir=/libexec
+ 
+ srcdir=$PWD
+ xmlada_src=../xmlada
+ 
+-CC=${CC:-cc}
++CC=${CC:-c99}
+ GNATMAKE=${GNATMAKE:-gnatmake}
+ CFLAGS=${CFLAGS:-$CFLAGS}
+ GNATMAKEFLAGS=${GNATMAKEFLAGS:--j0}
+ 
+ usage() {
+-    cat >&2 <<EOF
++    cat <<!
+ usage: $progname [options]
+ 
+ Options [defaults in brackets]:
+   --prefix=DIR       installation prefix [$prefix]
+   --bindir=DIR       user executables [PREFIX/bin]
+   --libexecdir=DIR   program executables [PREFIX/libexec]
+-  --datarootdir=DIR  read-only arch.-independent data root [PREFIX/share]
++  --datarootdir=DIR  read-only arch-independent data root [PREFIX/share]
+ 
+   --srcdir=DIR       source code path [$PWD]
+ 
+@@ -39,12 +36,12 @@ Environment variables:
+   DESTDIR            optional for staged installs
+   GNATMAKE           specify gnatmake Ada builder [$GNATMAKE]
+   GNATMAKEFLAGS      additional Ada builder flags [$GNATMAKEFLAGS]
+-EOF
+-exit 0
++!
+ }
+ 
+ error() {
+-    printf -- "%s: $1" "$progname" "${@:2}" >&2
++    m=$1
++    printf -- "%s: $m" "$progname" "$@" >&2
+     exit 1
+ }
+ 
+@@ -57,10 +54,11 @@ while :; do
+ 
+         --srcdir=?*)      srcdir=${1#*=} ;;
+         --with-xmlada=?*) xmlada_src=${1#*=} ;;
+-	--build)          MODE="build";;
+-	--install)        MODE="install";;
+ 
+-        -h|-\?|--help)    usage ;;
++        --build)          mode=build ;;
++        --install)        mode=install ;;
++
++        -h|-\?|--help)    usage; exit 0 ;;
+ 
+         *=*)              error '%s: Requires a value, try --help\n' "$1" ;;
+         -?*)              error '%s: Unknown option, try --help\n' "$1" ;;
+@@ -71,39 +69,37 @@ done
+ 
+ set -e
+ 
++bindir=${bindir:-$prefix/bin}
++datarootdir=${datarootdir:-$prefix/share}
++libexecdir=${libexecdir:-$prefix/libexec}
++
+ inc_flags="-I$srcdir/src -I$srcdir/gpr/src -I$xmlada_src/sax -I$xmlada_src/dom \
+ -I$xmlada_src/schema -I$xmlada_src/unicode -I$xmlada_src/input_sources"
+ 
+-# Programs to build and install
+ bin_progs="gprbuild gprconfig gprclean gprinstall gprname gprls"
+ lib_progs="gprlib gprbind"
+ 
+-# Build
+-if [ "x"${MODE} == "x" ] || [ ${MODE} == "build" ];
+-then
+-	command $CC -c $CFLAGS "$srcdir"/gpr/src/gpr_imports.c
+-
+-	for bin in $bin_progs; do
+-		command $GNATMAKE $inc_flags "$bin"-main -o "$bin" $CFLAGS $GNATMAKEFLAGS -largs gpr_imports.o
+-	done
+-
+-	for lib in $lib_progs; do
+-		command $GNATMAKE $inc_flags "$lib" $CFLAGS $GNATMAKEFLAGS -largs gpr_imports.o
+-	done
+-fi;
+-
+-# Install
+-
+-if [ "x"${MODE} == "x" ]  || [ ${MODE} == "install" ];
+-then
+-	mkdir -p "$DESTDIR$prefix$bindir"
+-	mkdir -p "$DESTDIR$prefix$libexecdir"/gprbuild
+-	mkdir -p "$DESTDIR$prefix$datarootdir"/gprconfig
+-	mkdir -p "$DESTDIR$prefix$datarootdir"/gpr
+-
+-	install -m0755 $bin_progs -t "$DESTDIR$prefix$bindir"
+-	install -m0755 $lib_progs -t "$DESTDIR$prefix$libexecdir"/gprbuild
+-	install -m0644 "$srcdir"/share/gprconfig/*.xml -t "$DESTDIR$prefix$datarootdir"/gprconfig
+-	install -m0644 "$srcdir"/share/gprconfig/*.ent -t "$DESTDIR$prefix$datarootdir"/gprconfig
+-	install -m0644 "$srcdir"/share/_default.gpr "$DESTDIR$prefix$datarootdir"/gpr/_default.gpr
++if [ ! "$mode" ] || [ "$mode" = build ]; then
++    command $CC -c $CFLAGS "$srcdir"/gpr/src/gpr_imports.c
++
++    for bin in $bin_progs; do
++        command $GNATMAKE $inc_flags "$bin"-main -o "$bin" $CFLAGS $GNATMAKEFLAGS -largs gpr_imports.o
++    done
++
++    for lib in $lib_progs; do
++        command $GNATMAKE $inc_flags "$lib" $CFLAGS $GNATMAKEFLAGS -largs gpr_imports.o
++    done
++fi
++
++if [ ! "$mode" ] || [ "$mode" = install ]; then
++    mkdir -p "$DESTDIR$bindir" \
++             "$DESTDIR$libexecdir"/gprbuild \
++             "$DESTDIR$datarootdir"/gpr \
++             "$DESTDIR$datarootdir"/gprconfig
++
++    install -m0755 $bin_progs -t "$DESTDIR$bindir"
++    install -m0755 $lib_progs -t "$DESTDIR$libexecdir"/gprbuild
++    install -m0644 "$srcdir"/share/gprconfig/*.xml -t "$DESTDIR$datarootdir"/gprconfig
++    install -m0644 "$srcdir"/share/gprconfig/*.ent -t "$DESTDIR$datarootdir"/gprconfig
++    install -m0644 "$srcdir"/share/_default.gpr "$DESTDIR$datarootdir"/gpr/_default.gpr
+ fi

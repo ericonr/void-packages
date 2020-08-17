@@ -1,0 +1,33 @@
+# Template file for 'gprbuild'
+pkgname=gprbuild
+version=2019
+_ver=community-${version}
+_kb_hash=94abfa8bb8da6457ac0288907a817f691d00f74e
+revision=1
+create_wrksrc=yes
+build_wrksrc=${pkgname}-${_ver}
+build_style=gnu-makefile
+hostmakedepends=""
+makedepends=""
+depends=""
+short_desc="Advanced build system designed for multi-language systems"
+maintainer="Érico Rolim <erico.erc@gmail.com>"
+license="GPL-3.0-or-later"
+homepage="https://github.com/AdaCore/gprbuild"
+distfiles="${homepage}/archive/${_ver}.tar.gz
+ https://github.com/AdaCore/xmlada/archive/${_ver}.tar.gz>xmlada.tar.gz
+ https://github.com/AdaCore/gprconfig_kb/archive/${_kb_hash}.tar.gz"
+checksum="2d2a6a656e2d601ce5783db14d85fc55468322eb7c239aff3eab9074362b7b23
+ 223152f6953513b302d528c33979f4d3c6b8c05e308e8299de57d8b45de7b13c
+ d4b1e20c0ccc9b8574d35537cf9e18af340ed8a841307a38c03ff33cb412bdde"
+
+pre_configure() {
+    ./bootstrap.sh --with-xmlada=../xmlada-${ver} --with-kb=../gprconfig_kb-${_kb_hash} \
+        --prefix=./bootstrap
+
+    PATH+="./bootstrap/bin"
+}
+
+do_configure() {
+    make prefix=$PREFIX setup
+}
