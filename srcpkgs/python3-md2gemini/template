@@ -1,0 +1,19 @@
+# Template file for 'python3-md2gemini'
+pkgname=python3-md2gemini
+version=1.7.0
+revision=1
+wrksrc="md2gemini-${version}"
+build_style=python3-module
+hostmakedepends="python3-setuptools python3-mistune2 python3-cjkwrap python3-wcwidth"
+depends="python3-mistune2 python3-cjkwrap python3-wcwidth"
+checkdepends="python3-pytest"
+short_desc="Converter from Markdown to the Gemini text format"
+maintainer="Alexis <flexibeast@gmail.com>"
+license="LGPL-3.0-only"
+homepage="https://github.com/makeworld-the-better-one/md2gemini"
+distfiles="${PYPI_SITE}/m/md2gemini/md2gemini-${version}.tar.gz"
+checksum=01b5566f4b374cebd8f84f9f2407cae2d49036933a65becc7b10bde518d172b6
+
+do_check() {
+	pytest
+}
