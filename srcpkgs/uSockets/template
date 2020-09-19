@@ -1,0 +1,19 @@
+# Template file for 'uSockets'
+pkgname=uSockets
+version=0.6.0
+revision=1
+build_style=gnu-makefile
+#configure_args=""
+#make_build_args=""
+make_install_args="prefix=/usr"
+#conf_files=""
+#make_dirs="/var/log/dir 0755 root root"
+hostmakedepends="libressl-devel"
+makedepends=""
+depends="libressl-devel"
+short_desc="Miniscule cross-platform eventing, networking & crypto for async applications"
+maintainer="Érico Nogueira <ericonr@disroot.org>"
+license="Apache-2.0"
+homepage="https://github.com/uNetworking/uSockets"
+distfiles="${homepage}/archive/v${version}.tar.gz"
+checksum=999387d3653b2bc663c34aa7e973358ac4c4897dccd644553a5caab843a978a1
