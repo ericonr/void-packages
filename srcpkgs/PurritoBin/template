@@ -1,0 +1,21 @@
+# Template file for 'PurritoBin'
+pkgname=PurritoBin
+version=0.2.3
+revision=1
+build_style=gnu-makefile
+make_cmd=bmake
+make_use_env=yes
+hostmakedepends="bmake clang"
+makedepends="uWebSockets libcxx-devel"
+short_desc="Ultra fast, minimalistic, encrypted command line paste-bin"
+maintainer="Érico Nogueira <ericonr@disroot.org>"
+license="ISC"
+homepage="https://bsd.ac"
+distfiles="https://github.com/PurritoBin/PurritoBin/archive/${version}.tar.gz"
+checksum=7192430b5238d94f1995603a3ae607860f7b692da19d1858a569c5550b547d29
+
+export prefix=/usr
+
+pre_build() {
+    export CXX=clang LDFLAGS=-lc++ CXXFLAGS=
+}
