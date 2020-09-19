@@ -1,0 +1,15 @@
+# Template file for 'uWebSockets'
+pkgname=uWebSockets
+version=18.13.0
+revision=1
+build_style=gnu-makefile
+make_install_args="prefix=/usr"
+hostmakedepends=""
+makedepends=""
+depends="uSockets"
+short_desc="Simple, secure & standards compliant web server"
+maintainer="Érico Nogueira <ericonr@disroot.org>"
+license="Apache-2.0"
+homepage="https://github.com/uNetworking/uWebSockets/"
+distfiles="${homepage}/archive/v${version}.tar.gz"
+checksum=1697c99a5ffdf714a82cdbe1054942dc7c41e4bab285d997fdcedad1415156a4
