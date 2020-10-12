@@ -15,7 +15,7 @@ changelog="https://raw.githubusercontent.com/xournalpp/xournalpp/master/CHANGELO
 distfiles="https://github.com/${pkgname}/${pkgname}/archive/${version}.tar.gz"
 checksum=1abf9925f11f0944c8142194be3e72541e230afa83490b074f5c6e613b0e2a02
 
-case "$XBPS_TARGET_MACHINE" in
-	*-musl) makedepends+=" libexecinfo-devel"
-		configure_args+=" -Dxournalpp_LDFLAGS=-lexecinfo";;
-esac
+if [ "$XBPS_TARGET_LIBC" = musl ]; then
+	makedepends+=" libexecinfo-devel"
+	configure_args+=" -DCMAKE_CXX_STANDARD_LIBRARIES=-lexecinfo"
+fi
