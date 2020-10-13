@@ -21,13 +21,8 @@ replaces="openlierox-data>=0"
 CXXFLAGS="-I${XBPS_CROSS_BASE}/usr/include/libxml2"
 case "$XBPS_TARGET_MACHINE" in
 	*-musl) makedepends+=" libexecinfo-devel";;
+	configure_args+=" -DCMAKE_CXX_STANDARD_LIBRARIES=-lexecinfo"
 esac
-
-pre_configure() {
-	case "$XBPS_TARGET_MACHINE" in
-		*-musl) sed -i CMakeLists.txt -e "/^TARGET_LINK_LIBRARIES/s/)/ execinfo)/" ;;
-	esac
-}
 
 do_install() {
 	# This package uses cmake yet it lacks an install target
