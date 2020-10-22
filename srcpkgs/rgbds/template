@@ -1,0 +1,17 @@
+# Template file for 'rgbds'
+pkgname=rgbds
+version=0.4.1
+revision=1
+build_style=cmake
+hostmakedepends="bison"
+makedepends="zlib-devel libpng-devel"
+short_desc="Rednex Game Boy Development System"
+maintainer="Érico Nogueira <ericonr@disroot.org>"
+license="MIT"
+homepage="https://rgbds.gbdev.io/"
+distfiles="https://github.com/gbdev/rgbds/archive/v${version}.zip"
+checksum=cd1bfa5bcd8f1704a2e180857ff6e1c99bc23863469825ef5898cfce0f6dce17
+
+post_install() {
+	vlicense LICENSE
+}
