@@ -1,0 +1,30 @@
+# Template file for 'SameBoy'
+pkgname=SameBoy
+version=0.13.6
+revision=1
+build_style=gnu-makefile
+make_use_env=yes
+make_build_args="WARNINGS= DATA_DIR=/usr/share/SameBoy/"
+hostmakedepends="which pkg-config rgbds"
+makedepends="SDL2-devel"
+short_desc="Game Boy and Game Boy Color emulator written in C"
+maintainer="Érico Nogueira <ericonr@disroot.org>"
+license="MIT"
+homepage="https://sameboy.github.io/"
+distfiles="https://github.com/LIJI32/SameBoy/archive/v${version}.tar.gz"
+checksum=5481417189d8c096fda9ad693903ae7d02ae1f3f2d6d8e959b4a1886d0adb310
+
+do_install() {
+	cd build/bin/SDL
+
+	vbin sameboy
+
+	vmkdir usr/share/SameBoy
+	for file in *
+	do
+		cp -rf "$file" $DESTDIR/usr/share/SameBoy/
+	done
+	rm $DESTDIR/usr/share/SameBoy/{sameboy,LICENSE}
+
+	vlicense LICENSE
+}
