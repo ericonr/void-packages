@@ -1,0 +1,17 @@
+# Template file for 'filmulator-gui'
+pkgname=filmulator-gui
+version=0.9.1
+revision=1
+build_wrksrc=${pkgname}
+build_style=cmake
+hostmakedepends="pkg-config"
+makedepends="tiff-devel libgomp-devel exiv2-devel libjpeg-turbo-devel
+ libraw-devel librtprocess-devel lensfun-devel libcurl-devel libarchive-devel
+ qt5-devel qt5-declarative-devel qt5-plugin-mysql qt5-plugin-odbc
+ qt5-plugin-pgsql qt5-plugin-sqlite qt5-plugin-tds"
+short_desc="Simplified raw editing with the power of film"
+maintainer="Érico Rolim <ericonr@disroot.org>"
+license="GPL-3.0-or-later"
+homepage="https://filmulator.org/"
+distfiles="https://github.com/CarVac/filmulator-gui/archive/v${version}.tar.gz"
+checksum=54a8c6e5c00b8986a234784fca1a7acbc5ac9c71aa5476668a464a8a89376bca
