@@ -1,0 +1,24 @@
+# Template file for 'librtprocess'
+pkgname=librtprocess
+version=0.11.0
+revision=1
+build_style=cmake
+hostmakedepends="pkg-config"
+makedepends="libgomp-devel"
+short_desc="Project to make RawTherapee's processing algorithms more readily available"
+maintainer="Érico Nogueira <ericonr@disroot.org>"
+license="GPL-3.0-or-later"
+homepage="https://github.com/CarVac/librtprocess"
+distfiles="${homepage}/archive/${version}.tar.gz"
+checksum=0a1691e6e90742644506a1123c716cdcfc28689adf461747843ab0440a837584
+
+librtprocess-devel_package() {
+	depends="${sourcepkg}>=${version}_${revision}"
+	short_desc+=" - development files"
+	pkg_install() {
+		vmove usr/include
+		vmove usr/lib/pkgconfig
+		vmove usr/lib/cmake
+		vmove "usr/lib/*.so"
+	}
+}
