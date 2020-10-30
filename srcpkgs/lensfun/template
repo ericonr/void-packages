@@ -1,17 +1,20 @@
 # Template file for 'lensfun'
 pkgname=lensfun
-version=0.3.2
-revision=2
+version=0.3.96
+revision=1
+_commit=5c78d634364abfe2b6d895a4ea3eb0be7367a294
+wrksrc=${pkgname}-${_commit}
 build_style=cmake
 configure_args="-DINSTALL_HELPER_SCRIPTS=0"
 maintainer="Orphaned <orphan@voidlinux.org>"
-homepage="http://lensfun.sourceforge.net/"
+homepage="http://lensfun.github.io"
 license="LGPL-3, CC-BY-SA-3.0"
 short_desc="Library for rectifying and simulating photographic lens distortions"
-hostmakedepends="pkg-config python"
+hostmakedepends="pkg-config python3"
 makedepends="libglib-devel"
-distfiles="${SOURCEFORGE_SITE}/${pkgname}/${version}/${pkgname}-${version}.tar.gz"
-checksum=ae8bcad46614ca47f5bda65b00af4a257a9564a61725df9c74cb260da544d331
+#distfiles="https://github.com/lensfun/lensfun/archive/v${version}.tar.gz"
+distfiles="https://github.com/lensfun/lensfun/archive/${_commit}.tar.gz"
+checksum=938266d2ba4341ddf8b6c94f93d2a4c8cb83e186fcb2c04d166b5799d8817714
 
 case "$XBPS_TARGET_MACHINE" in
 	i686*|x86_64*);;
