@@ -12,17 +12,10 @@ homepage="https://github.com/llloret/osmid/"
 distfiles="https://github.com/llloret/osmid/archive/v${version}.tar.gz>${pkgname}-${version}.tar.gz"
 checksum=774d6c2c7ba81d1ab9d4e7ee031ce15a1506f19ee940166d277dbdee98f87b50
 
-case "$XBPS_TARGET_MACHINE" in
-	*-musl) makedepends+=" libexecinfo-devel" ;;
-esac
-
-pre_configure() {
-	case "$XBPS_TARGET_MACHINE" in
-		*-musl) vsed -i CMakeLists.txt \
-			-e "/target_link_libraries/s/X11)/X11 execinfo)/"
-			;;
-	esac
-}
+if [ "$XBPS_TARGET_LIBC" = musl ]; then
+	makedepends+=" libexecinfo-devel"
+	configure_args+=" -DCMAKE_CXX_STANDARD_LIBRARIES=-lexecinfo"
+fi
 
 post_install() {
 	vlicense LICENSE.md
