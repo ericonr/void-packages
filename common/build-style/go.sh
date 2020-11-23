@@ -33,10 +33,10 @@ do_build() {
 			# default behavior.
 			go_mod_mode=
 		fi
-		go install -p "$XBPS_MAKEJOBS" -mod="${go_mod_mode}" -x -tags "${go_build_tags}" -ldflags "${go_ldflags}" ${go_package}
+		go install -p "$XBPS_MAKEJOBS" -mod="${go_mod_mode}" -x -tags "${go_build_tags}" -ldflags "${go_ldflags}" ${go_build_args} ${go_package}
 	else
 		# Otherwise, build using GOPATH
-		go get -p "$XBPS_MAKEJOBS" -x -tags "${go_build_tags}" -ldflags "${go_ldflags}" ${go_package}
+		go get -p "$XBPS_MAKEJOBS" -x -tags "${go_build_tags}" -ldflags "${go_ldflags}" ${go_build_args} ${go_package}
 	fi
 }
 
