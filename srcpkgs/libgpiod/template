@@ -1,0 +1,32 @@
+# Template file for 'libgpiod'
+pkgname=libgpiod
+version=1.6.1
+revision=1
+build_style=gnu-configure
+configure_args="--enable-tools=yes --enable-tests
+ --enable-bindings-cxx --enable-bindings-python"
+hostmakedepends="automake libtool m4 autoconf autoconf-archive pkg-config"
+makedepends="python3-devel"
+depends=""
+short_desc="Library and tools for interacting with the linux GPIO character device"
+maintainer="Érico Rolim <erico.erc@gmail.com>"
+license="GPL-3.0-or-later"
+homepage="https://git.kernel.org/pub/scm/libs/libgpiod/libgpiod.git/"
+distfiles="${homepage}/snapshot/libgpiod-${version}.tar.gz"
+checksum=36dcbefab40a009ea3ef9c435f278a9b9367764671bdd063ac6704f989937b5c
+
+pre_configure() {
+	autoreconf -fi
+}
+
+libgpiod-devel_package() {
+	depends="${sourcepkg}>=${version}_${revision}"
+	short_desc+=" - development files"
+	pkg_install() {
+		vmove usr/share/man/man3
+		vmove usr/include
+		vmove usr/lib/pkgconfig
+		vmove "usr/lib/*.a"
+		vmove "usr/lib/*.so"
+	}
+}
