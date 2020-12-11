@@ -1,0 +1,13 @@
+diff --git a/arch/generic/bits/fcntl.h b/arch/generic/bits/fcntl.h
+index 730a98cf..c2fd1760 100644
+--- a/arch/generic/bits/fcntl.h
++++ b/arch/generic/bits/fcntl.h
+@@ -13,7 +13,7 @@
+ 
+ #define O_ASYNC      020000
+ #define O_DIRECT     040000
+-#define O_LARGEFILE 0100000
++#define O_LARGEFILE 0
+ #define O_NOATIME  01000000
+ #define O_PATH    010000000
+ #define O_TMPFILE 020200000
