@@ -1,0 +1,22 @@
+# Template file for 'goldberg_emulator'
+pkgname=goldberg_emulator
+version=0.2.5
+revision=1
+#archs="i686 x86_64"
+#wrksrc=
+#create_wrksrc=yes
+build_style=cmake
+#configure_args=""
+#make_build_args=""
+#make_install_args=""
+#conf_files=""
+#make_dirs="/var/log/dir 0755 root root"
+hostmakedepends="protobuf"
+makedepends="protobuf-devel"
+depends=""
+short_desc="Steam emulator"
+maintainer="Érico Rolim <erico.erc@gmail.com>"
+license="GPL-3.0-or-later"
+homepage="https://gitlab.com/Mr_Goldberg/goldberg_emulator"
+distfiles="${homepage}/-/archive/${version}/${pkgname}-${version}.tar.gz"
+checksum=9270d7f935bf205b504c505d83ee21df7038fb431bd88ecb3dcc5c37f83091ff
