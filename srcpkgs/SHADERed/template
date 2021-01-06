@@ -1,0 +1,79 @@
+# Template file for 'SHADERed'
+pkgname=SHADERed
+version=1.4.1
+revision=1
+inih_commit=1b9ee30b8380dfed8d9fe8ab59ad1a04515824b7
+pugixml_commit=40be014e481c4feae5bab1fd29d38004cc2c2488
+ImGuiColorTextEdit_commit=e3f31f80d702e591ec97ed4aa76639dab493a8fd
+imgui_commit=b29c8de3d045410cd73a6a708d6bc2ab41c30426
+glslang_commit=0ab78114a9e1b28a48cd37252ec59fdcf85e187d
+assimp_commit=2012451a0ba6d18df0d3ee17d8dd33e390c25884
+SPIRV_VM_commit=d6174a48a764233c805d6c7b7e8fae036ceb38f0
+spirv_tools_commit=bd0a2da946c3fb4c641acc4a0d53ee67653e200a
+spirv_headers_commit=c0df742ec0b8178ad58c68cff3437ad4b6a06e26
+ShaderExpressionParser_commit=ac2e324f5d484dfdb58b697bacb591cf784ee072
+SpvGenTwo_commit=fd6cf45c2ef7bf885d137e743a400e27ebe5fa94
+#create_wrksrc=yes
+#build_wrksrc=$pkgname-$version
+build_style=cmake
+configure_args="-DBUILD_IMMEDIATE_MODE=ON"
+hostmakedepends="pkg-config"
+makedepends="SDL2-devel SFML-devel glew-devel glm libassimp-devel SPIRV-Headers
+ SPIRV-Tools-devel glslang-devel"
+short_desc="Lightweight, cross-platform & full-featured shader IDE"
+maintainer="Érico Nogueira <ericonr@disroot.org>"
+license="MIT"
+homepage="https://shadered.org/"
+distfiles="https://github.com/dfranx/SHADERed/archive/v${version}.tar.gz
+ https://github.com/jtilly/inih/archive/${inih_commit}.tar.gz
+ https://github.com/zeux/pugixml/archive/${pugixml_commit}.tar.gz
+ https://github.com/dfranx/ImGuiColorTextEdit/archive/${ImGuiColorTextEdit_commit}.tar.gz
+ https://github.com/dfranx/imgui/archive/${imgui_commit}.tar.gz
+ https://github.com/KhronosGroup/glslang/archive/${glslang_commit}.tar.gz
+ https://github.com/dfranx/assimp/archive/${assimp_commit}.tar.gz
+ https://github.com/dfranx/SPIRV-VM/archive/${SPIRV_VM_commit}.tar.gz
+ https://github.com/KhronosGroup/SPIRV-Tools/archive/${spirv_tools_commit}.tar.gz
+ https://github.com/KhronosGroup/SPIRV-Headers/archive/${spirv_headers_commit}.tar.gz
+ https://github.com/dfranx/ShaderExpressionParser/archive/${ShaderExpressionParser_commit}.tar.gz
+ https://github.com/dfranx/SpvGenTwo/archive/${SpvGenTwo_commit}.tar.gz"
+checksum="5fe78ac90dde9c387b0a5d2f81417ff3d72946d8a5959e8042b455563057676c
+ 2d08995d4c01e74903ecd2d047408a1b643ddc6f7c8c80bd97e04795faf2c4a2
+ 58660fb1475168dbfd80275136a65628dbc84fe70a3bc4e26edac4d59ee7bd26
+ f18ec3be01e4d8b0d241301cc6ab50d4a13669c9e7429a4e7543230e6c2c0c31
+ b8e9aa4c33c1369c2bc07d14fcaa4a76643219c0c856b3ed23ff76ed27a6c8ad
+ 6a2987308d1c1becb2bbf2c3c746d98e7b779e9d9345df3965e6b929bce7f0dc
+ f0abd0e7b71cce56a06924fbb1e1971385f21ee0368696b3b8d85d493e89dc64
+ 9e7e0bb03b007f736018e4a4e4f3474ab336cdcbe8289d80198b19ee8c5e9fb3
+ 7db4bcd2ff55fb04436d5cfd37648b5b55627befdd7ae4e1f80ef3c664e4033a
+ 2e940613536451a4e98bdedf074b648b0182c391ee9144a758798eb3a543a2c4
+ 0e5f380425c8b0e28b680732cba17cc605ed75fb8a5c174feb891e1b0ea49089
+ 7560e405cc4140965817446f9d05d1070f893588cbe100872222284e4dc1e304"
+
+post_extract() {
+	rmdir -v ${wrksrc}/libs/inih
+	mv ${wrksrc}/../inih-${inih_commit} ${wrksrc}/libs/inih
+	rmdir -v ${wrksrc}/libs/pugixml
+	mv ${wrksrc}/../pugixml-${pugixml_commit} ${wrksrc}/libs/pugixml
+	rmdir -v ${wrksrc}/libs/ImGuiColorTextEdit
+	mv ${wrksrc}/../ImGuiColorTextEdit-${ImGuiColorTextEdit_commit} ${wrksrc}/libs/ImGuiColorTextEdit
+	rmdir -v ${wrksrc}/libs/imgui
+	mv ${wrksrc}/../imgui-${imgui_commit} ${wrksrc}/libs/imgui
+	rmdir -v ${wrksrc}/libs/glslang
+	#mv ${wrksrc}/../glslang-${glslang_commit} ${wrksrc}/libs/glslang
+	rmdir -v ${wrksrc}/libs/assimp
+	#mv ${wrksrc}/../assimp-${assimp_commit} ${wrksrc}/libs/assimp
+	rmdir -v ${wrksrc}/libs/SPIRV-VM
+	mv ${wrksrc}/../SPIRV-VM-${SPIRV_VM_commit} ${wrksrc}/libs/SPIRV-VM
+	rmdir -v ${wrksrc}/libs/spirv-tools
+	#mv ${wrksrc}/../SPIRV-Tools-${spirv_tools_commit} ${wrksrc}/libs/spirv-tools
+	rmdir -v ${wrksrc}/libs/spirv-headers
+	#mv ${wrksrc}/../SPIRV-Headers-${spirv_headers_commit} ${wrksrc}/libs/spirv-headers
+	rmdir -v ${wrksrc}/libs/ShaderExpressionParser
+	mv ${wrksrc}/../ShaderExpressionParser-${ShaderExpressionParser_commit} ${wrksrc}/libs/ShaderExpressionParser
+	rmdir -v ${wrksrc}/libs/SpvGenTwo
+	mv ${wrksrc}/../SpvGenTwo-${SpvGenTwo_commit} ${wrksrc}/libs/SpvGenTwo
+}
+
+post_install() {
+	vlicense LICENSE
+}
