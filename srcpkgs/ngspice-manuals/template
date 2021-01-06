@@ -1,0 +1,12 @@
+# Template file for 'ngspice-manuals'
+pkgname=ngspice-manuals
+version=32
+revision=1
+build_style=gnu-configure
+hostmakedepends="lyx texlive texlive-langgreek"
+short_desc="Ngspice User Manual"
+maintainer="Érico Nogueira <ericonr@disroot.org>"
+license="CC-BY-SA-4.0"
+homepage="http://ngspice.sourceforge.net"
+distfiles="${SOURCEFORGE_SITE}/ngspice/ng-spice-rework/${version}/ngspice-doc-${version}.tar.gz"
+checksum=d1809b3b1f30f0d1a0d867d49d5ba7114fd105e1fe9bf793226fed3f9c0710f9
