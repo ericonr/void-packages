@@ -1,7 +1,9 @@
 # Template file for 'neovim'
 pkgname=neovim
-version=0.5.0
+version=0.5.0p1
 revision=1
+_commit=67eb63df506ed0e3873209e38403b08a8612297f
+wrksrc=$pkgname-$_commit
 build_style=cmake
 build_helper="qemu"
 configure_args="-DCMAKE_BUILD_TYPE=RelWithDebInfo"
@@ -13,8 +15,8 @@ short_desc="Fork of Vim aiming to improve user experience, plugins and GUIs"
 maintainer="Steve Prybylski <sa.prybylx@gmail.com>"
 license="Apache-2.0, custom:Vim"
 homepage="https://neovim.io"
-distfiles="https://github.com/neovim/neovim/archive/v${version}.tar.gz"
-checksum=2294caa9d2011996499fbd70e4006e4ef55db75b99b6719154c09262e23764ef
+distfiles="https://github.com/neovim/neovim/archive/$_commit.tar.gz"
+checksum=b4d6594c127e76e386a17af51abf492cb11a473954ccc12300aee4ebe7db29ff
 
 alternatives="
  vi:vi:/usr/bin/nvim
