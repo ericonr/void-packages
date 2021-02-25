@@ -1,0 +1,19 @@
+# Template file for 'Cockatrice'
+pkgname=Cockatrice
+version=2.8.0
+revision=1
+_reldate=2021-01-26
+wrksrc=${pkgname}-${_reldate}-Release-${version}
+build_style=cmake
+configure_args="-DWITH_SERVER=1"
+hostmakedepends="qt5-qmake qt5-host-tools protobuf"
+_server_depends="qt5-plugin-mysql qt5-plugin-odbc qt5-plugin-pgsql
+ qt5-plugin-sqlite qt5-plugin-tds"
+makedepends="qt5-websockets-devel qt5-svg-devel qt5-multimedia-devel
+ protobuf-devel ${_server_depends}"
+short_desc="Open-source program for playing multiplayer tabletop card games"
+maintainer="Érico Nogueira <ericonr@disroot.org>"
+license="GPL-2.0-or-later"
+homepage="https://cockatrice.github.io"
+distfiles="https://github.com/Cockatrice/Cockatrice/archive/${_reldate}-Release-${version}.tar.gz"
+checksum=fbf908138e40b20529ebdc27b3b37d63891bf6a91f660be694407a8e57471e79
