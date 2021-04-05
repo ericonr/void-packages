@@ -1,0 +1,16 @@
+# Template file for 'Sourcetrail'
+pkgname=Sourcetrail
+version=2020.4.35
+revision=1
+build_style=cmake
+hostmakedepends="git"
+makedepends="boost-devel qt5-devel qt5-svg-devel"
+depends=""
+short_desc="Free and open-source interactive source explorer"
+maintainer="Érico Nogueira <ericonr@disroot.org>"
+license="GPL-3.0-only"
+homepage="https://www.sourcetrail.com"
+distfiles="https://github.com/CoatiSoftware/Sourcetrail/archive/refs/tags/$version.tar.gz"
+checksum=2dd42dbf7320b57bd6b36c29d9c3313c20b2b4cffe68c5540e525543f9bb78ed
+
+# needs do_install
