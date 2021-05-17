@@ -1,0 +1,32 @@
+# Template file for 'netbsd-curses'
+pkgname=netbsd-curses
+version=0.3.2
+revision=1
+build_style=gnu-makefile
+short_desc="Portable libcurses implementation from NetBSD"
+maintainer="Érico Nogueira <ericonr@disroot.org>"
+license="BSD-3-Clause, BSD-2-Clause"
+homepage="https://github.com/sabotage-linux/netbsd-curses"
+distfiles="${homepage}/archive/refs/tags/v${version}.tar.gz"
+checksum=9d3ebd651e5f70b87b1327b01cbd7e0c01a0f036b4c1371f653b7704b11daf23
+conflicts="ncurses-devel"
+
+netbsd-curses-devel_package() {
+	depends="${sourcepkg}>=${version}_${revision}"
+	short_desc+=" - development files"
+	pkg_install() {
+		vmove usr/share/man/man3
+		vmove usr/include
+		vmove usr/lib/pkgconfig
+		vmove "usr/lib/*.a"
+	}
+}
+
+netbsd-curses-progs_package() {
+	short_desc+=" - executables"
+	conflicts="ncurses"
+	pkg_install() {
+		vmove usr/bin
+		vmove usr/share/man/man1
+	}
+}
