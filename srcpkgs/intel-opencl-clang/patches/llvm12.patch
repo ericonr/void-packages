@@ -1,0 +1,18 @@
+From 11fe109dfd83b3dae972d6c8102e893dd88e56c2 Mon Sep 17 00:00:00 2001
+From: Feng Zou <feng.zou@intel.com>
+Date: Fri, 7 Aug 2020 14:05:39 +0800
+Subject: [PATCH] Update LLVM version
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index b8b514e..aff00e3 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -20,7 +20,7 @@ if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
+     add_definitions(-DUSE_PREBUILT_LLVM)
+ 
+     if(NOT PREFERRED_LLVM_VERSION)
+-        set(PREFERRED_LLVM_VERSION "11.0.0")
++        set(PREFERRED_LLVM_VERSION "12.0.0")
+     endif(NOT PREFERRED_LLVM_VERSION)
+     message(STATUS "Looking for LLVM version ${PREFERRED_LLVM_VERSION}")
+     find_package(LLVM ${PREFERRED_LLVM_VERSION} REQUIRED)
