@@ -1,19 +1,35 @@
 # Template file for 'intel-graphics-compiler'
 pkgname=intel-graphics-compiler
-version=1.0.3977
+version=1.0.7423
 revision=1
+# see commit in changelog
+_vc_commit=069ced1e8a408d8b602b3b210017603792df6260
 archs="x86_64*"
 wrksrc=intel-graphics-compiler-igc-${version}
 build_style=cmake
-configure_args="-DIGC_PREFERRED_LLVM_VERSION='10.0.0' -Wno-dev"
+configure_args="-DIGC_OPTION__LLVM_PREFERRED_VERSION='12.0.0' -DINSTALL_SPIRVDLL=0
+ -DVC_INTRINSICS_SRC=$XBPS_BUILDDIR/${wrksrc}/vc-intrinsics-${_vc_commit}
+ -Wno-dev"
 hostmakedepends="bison flex"
-makedepends="clang-tools-extra llvm intel-opencl-clang-devel"
+makedepends="clang-tools-extra llvm12 intel-opencl-clang-devel"
 short_desc="Intel Graphics Compiler for OpenCL"
 maintainer="Stefano Ragni <st3r4g@protonmail.com>"
 license="MIT"
 homepage="https://github.com/intel/intel-graphics-compiler"
-distfiles="https://github.com/intel/intel-graphics-compiler/archive/igc-${version}.tar.gz"
-checksum=60641b21c01f97f4b2a1881f7562449c733fdde9108b7e4ad5be2b4db38ceae6
+changelog="https://github.com/intel/intel-graphics-compiler/releases"
+distfiles="https://github.com/intel/intel-graphics-compiler/archive/igc-${version}.tar.gz
+ https://github.com/intel/vc-intrinsics/archive/${_vc_commit}.tar.gz"
+checksum="4213710fcb5a299a1fc4c7429375312f7875b9efab2323e6e180ba908ba4cb00
+ e19fca77ac0d62b0792ed554b90526f54c01a7bfc71e159583430df082113685"
+patch_args=-Np1
+
+post_extract() {
+	mv ../vc-intrinsics-${_vc_commit} .
+}
+
+post_patch() {
+	vsed s/-Werror// -i IGC/CMakeLists.txt
+}
 
 post_install() {
 	vlicense LICENSE.md
