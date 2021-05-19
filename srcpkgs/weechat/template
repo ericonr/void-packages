@@ -8,8 +8,9 @@ configure_args="-DENABLE_MAN=ON -DENABLE_PERL=ON
  -DENABLE_GUILE=OFF -DENABLE_PHP=OFF -DENABLE_JAVASCRIPT=OFF"
 hostmakedepends="ruby ruby-asciidoctor libgcrypt-devel pkg-config python3 tcl-devel
  gettext"
-makedepends="aspell-devel gnutls-devel libcurl-devel lua53-devel ncurses-devel
- perl python3-devel ruby-devel tcl-devel libgcrypt-devel"
+makedepends="aspell-devel gnutls-devel libcurl-devel lua53-devel
+ perl python3-devel ruby-devel tcl-devel libgcrypt-devel
+ $(vopt_if netbsd_curses netbsd-curses-devel ncurses-devel)"
 depends="ca-certificates"
 short_desc="Fast, light and extensible IRC client"
 maintainer="Leah Neukirchen <leah@vuxu.org>"
@@ -20,7 +21,11 @@ distfiles="https://www.weechat.org/files/src/weechat-${version}.tar.xz"
 checksum=cafeab8af8be4582ccfd3e74fd40e5086a1efa158231f2c26b8b05c3950fcbdf
 lib32disabled=yes
 
-subpackages="weechat-aspell weechat-devel weechat-ruby weechat-python weechat-tcl weechat-lua weechat-perl"
+build_options="netbsd_curses"
+desc_option_netbsd_curses="Build with netbsd-curses instead of ncurses"
+
+subpackages="weechat-aspell weechat-devel weechat-ruby weechat-python weechat-tcl
+ weechat-lua weechat-perl"
 
 if [ "$CROSS_BUILD" ]; then
 	_perlpath="${XBPS_CROSS_BASE}/usr/lib/perl5/core_perl/CORE"
@@ -46,7 +51,7 @@ weechat-aspell_package() {
 }
 weechat-devel_package() {
 	lib32disabled=yes
-	depends="${sourcepkg}>=${version}_${revision} ncurses-devel"
+	depends="${sourcepkg}>=${version}_${revision}"
 	short_desc+=" - development package"
 	pkg_install() {
 		vmove usr/include
