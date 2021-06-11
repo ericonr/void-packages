@@ -17,6 +17,7 @@ license="Apache-2.0, custom:Vim"
 homepage="https://neovim.io"
 distfiles="https://github.com/neovim/neovim/archive/$_commit.tar.gz"
 checksum=b4d6594c127e76e386a17af51abf492cb11a473954ccc12300aee4ebe7db29ff
+patch_args=-Np1
 
 alternatives="
  vi:vi:/usr/bin/nvim
