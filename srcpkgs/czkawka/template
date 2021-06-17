@@ -1,0 +1,21 @@
+# Template file for 'czkawka'
+pkgname=czkawka
+version=3.1.0
+revision=1
+build_style=cargo
+hostmakedepends="pkg-config"
+makedepends="gtk+3-devel alsa-lib-devel"
+short_desc="Multi functional app to find duplicates, empty folders, similar images etc"
+maintainer="Érico Nogueira <ericonr@disroot.org>"
+license="MIT"
+homepage="https://github.com/qarmin/czkawka/"
+distfiles="https://github.com/qarmin/czkawka/archive/refs/tags/${version}.tar.gz"
+checksum=296642c2c0ed5bb930290aafce59e493c7318565b4a39d521b2ec9e2f1bfe52a
+
+do_install() {
+	for _f in czkawka_{cli,gui}
+	do
+		vbin target/${RUST_TARGET}/release/${_f}
+	done
+	vlicense LICENSE
+}
