@@ -1,4 +1,5 @@
 # Template file for 'kicad'
+#cmake .. -GNinja -DwxWidgets_CONFIG_EXECUTABLE=/bin/wx-config-gtk3
 pkgname=kicad
 version=5.1.10
 revision=2
@@ -10,9 +11,9 @@ configure_args="-DKICAD_BUILD_VERSION=${version} -DKICAD_SCRIPTING=ON
  -DKICAD_SCRIPTING_PYTHON3=ON -DKICAD_SCRIPTING_WXPYTHON_PHOENIX=ON
  -DwxWidgets_CONFIG_EXECUTABLE=$WX_CONFIG
  -DKICAD_USE_OCC=$(vopt_if occt ON OFF) -DKICAD_SPICE=$(vopt_if spice ON OFF)"
-hostmakedepends="pkg-config swig wxWidgets-gtk3-devel python3"
+hostmakedepends="pkg-config swig wxWidgets-gtk3-devel python3 tar"
 makedepends="wxWidgets-gtk3-devel wxPython4 python3-devel glew-devel cairo-devel
- openssl-devel boost-devel libcurl-devel glm libgomp-devel
+ openssl-devel boost-devel libcurl-devel glm libgomp-devel gtk+3-devel
  $(vopt_if occt occt-devel) $(vopt_if spice ngspice-devel)"
 depends="wxPython4"
 short_desc="Electronic schematic and PCB design software"
