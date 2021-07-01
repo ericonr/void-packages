@@ -1,0 +1,86 @@
+From 4c940ae019d6f1d3b95ccf71c8c53bd0757626a3 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Daniel=20Ekl=C3=B6f?= <daniel@ekloef.se>
+Date: Tue, 29 Jun 2021 18:34:27 +0200
+Subject: [PATCH] main: flush text run caches on font reload
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+This fixes an issue where wrong font was being used for *some* entries
+if we were guessing which monitor fuzzel would appear on, and guessed
+wrong.
+
+The reason being, of course, that we rendered one frame with the
+“wrong” font, which set the text run cache on the items visible _on
+that frame_. Then we reload the font, and bam, we’re using the old
+text run cache for some entries.
+---
+ CHANGELOG.md  | 5 +++++
+ application.c | 9 +++++++++
+ application.h | 1 +
+ main.c        | 7 ++++---
+ 4 files changed, 19 insertions(+), 3 deletions(-)
+
+diff --git a/application.c b/application.c
+index cafb3e4..b88c350 100644
+--- a/application.c
++++ b/application.c
+@@ -253,3 +253,12 @@ applications_destroy(struct application_list *apps)
+     free(apps->v);
+     free(apps);
+ }
++
++void
++applications_flush_text_run_cache(struct application_list *apps)
++{
++    for (size_t i = 0; i < apps->count; i++) {
++        fcft_text_run_destroy(apps->v[i].shaped);
++        apps->v[i].shaped = NULL;
++    }
++}
+diff --git a/application.h b/application.h
+index dc73d91..772afa3 100644
+--- a/application.h
++++ b/application.h
+@@ -47,3 +47,4 @@ struct application_list {
+ 
+ struct application_list *applications_init(void);
+ void applications_destroy(struct application_list *apps);
++void applications_flush_text_run_cache(struct application_list *apps);
+diff --git a/main.c b/main.c
+index d9784cb..c7f1afb 100644
+--- a/main.c
++++ b/main.c
+@@ -203,7 +203,7 @@ print_usage(const char *prog_name)
+     printf("Colors must be specified as a 32-bit hexadecimal RGBA quadruple.\n");
+ }
+ 
+-struct icon_reload_context {
++struct font_reload_context {
+     bool icons_enabled;
+     const icon_theme_list_t *themes;
+     struct application_list *apps;
+@@ -212,9 +212,10 @@ struct icon_reload_context {
+ static void
+ font_reloaded(struct wayland *wayl, struct fcft_font *font, void *data)
+ {
+-    struct icon_reload_context *ctx = data;
++    struct font_reload_context *ctx = data;
+     if (ctx->icons_enabled)
+         icon_reload_application_icons(*ctx->themes, font->height, ctx->apps);
++    applications_flush_text_run_cache(ctx->apps);
+ }
+ 
+ static bool
+@@ -517,7 +518,7 @@ main(int argc, char *const *argv)
+     if ((matches = matches_init(apps)) == NULL)
+         goto out;
+ 
+-    struct icon_reload_context font_reloaded_data = {
++    struct font_reload_context font_reloaded_data = {
+         .icons_enabled = icons_enabled,
+         .themes = &themes,
+         .apps = apps,
+-- 
+2.29.2
+
