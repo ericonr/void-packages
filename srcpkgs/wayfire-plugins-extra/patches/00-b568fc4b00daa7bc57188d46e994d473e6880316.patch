@@ -1,0 +1,122 @@
+From b568fc4b00daa7bc57188d46e994d473e6880316 Mon Sep 17 00:00:00 2001
+From: Scott Moreau <oreaus@gmail.com>
+Date: Thu, 1 Jul 2021 15:38:09 -0600
+Subject: [PATCH] annotate: Make it faster (#91)
+
+Before we were rendering and uploading to gpu on each motion event.
+Now we do it only once per frame, which makes things much faster.
+---
+ src/annotate.cpp | 70 +++++++++++++++++++++++-------------------------
+ 1 file changed, 33 insertions(+), 37 deletions(-)
+
+diff --git a/src/annotate.cpp b/src/annotate.cpp
+index 93f58f2..74d4ff8 100644
+--- a/src/annotate.cpp
++++ b/src/annotate.cpp
+@@ -80,11 +80,6 @@ class wayfire_annotate_screen : public wf::plugin_interface_t
+             overlays[x].resize(wsize.height);
+         }
+ 
+-        grab_interface->callbacks.pointer.motion = [=] (int x, int y)
+-        {
+-            pointer_moved();
+-        };
+-
+         grab_interface->callbacks.pointer.button = [=] (uint32_t b, uint32_t s)
+         {
+             if ((b == button) && (s == WL_POINTER_BUTTON_STATE_RELEASED))
+@@ -137,8 +132,10 @@ class wayfire_annotate_screen : public wf::plugin_interface_t
+ 
+     wf::button_callback draw_begin = [=] (wf::buttonbinding_t btn)
+     {
++        output->render->add_effect(&frame_pre_paint, wf::OUTPUT_EFFECT_DAMAGE);
+         grab_point = last_cursor = wf::get_core().get_cursor_position();
+         button     = btn.get_button();
++        connect_ws_stream_post();
+ 
+         grab();
+ 
+@@ -149,6 +146,7 @@ class wayfire_annotate_screen : public wf::plugin_interface_t
+     {
+         auto& ol = get_current_overlay();
+ 
++        output->render->rem_effect(&frame_pre_paint);
+         overlay_destroy(shape_overlay);
+         ungrab();
+ 
+@@ -171,38 +169,6 @@ class wayfire_annotate_screen : public wf::plugin_interface_t
+         }
+     }
+ 
+-    void pointer_moved()
+-    {
+-        auto current_cursor = wf::get_core().get_cursor_position();
+-        auto& ol = get_current_overlay();
+-
+-        switch (draw_method)
+-        {
+-          case ANNOTATE_METHOD_DRAW:
+-            cairo_draw(ol, last_cursor, current_cursor);
+-            break;
+-
+-          case ANNOTATE_METHOD_LINE:
+-            cairo_draw_line(shape_overlay, current_cursor);
+-            break;
+-
+-          case ANNOTATE_METHOD_RECTANGLE:
+-            cairo_draw_rectangle(shape_overlay, current_cursor);
+-            break;
+-
+-          case ANNOTATE_METHOD_CIRCLE:
+-            cairo_draw_circle(shape_overlay, current_cursor);
+-            break;
+-
+-          default:
+-            return;
+-        }
+-
+-        last_cursor = current_cursor;
+-
+-        connect_ws_stream_post();
+-    }
+-
+     void deactivate_check()
+     {
+         bool all_workspaces_clear = true;
+@@ -509,6 +475,36 @@ class wayfire_annotate_screen : public wf::plugin_interface_t
+         last_bbox = bbox;
+     }
+ 
++    wf::effect_hook_t frame_pre_paint = [=] ()
++    {
++        auto current_cursor = wf::get_core().get_cursor_position();
++        auto& ol = get_current_overlay();
++
++        switch (draw_method)
++        {
++          case ANNOTATE_METHOD_DRAW:
++            cairo_draw(ol, last_cursor, current_cursor);
++            break;
++
++          case ANNOTATE_METHOD_LINE:
++            cairo_draw_line(shape_overlay, current_cursor);
++            break;
++
++          case ANNOTATE_METHOD_RECTANGLE:
++            cairo_draw_rectangle(shape_overlay, current_cursor);
++            break;
++
++          case ANNOTATE_METHOD_CIRCLE:
++            cairo_draw_circle(shape_overlay, current_cursor);
++            break;
++
++          default:
++            return;
++        }
++
++        last_cursor = current_cursor;
++    };
++
+     wf::signal_connection_t workspace_stream_post{[this] (wf::signal_data_t *data)
+         {
+             const auto& workspace = static_cast<wf::stream_signal_t*>(data);
