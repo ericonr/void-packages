@@ -24,9 +24,13 @@ netbsd-curses-devel_package() {
 
 netbsd-curses-progs_package() {
 	short_desc+=" - executables"
-	conflicts="ncurses"
 	pkg_install() {
 		vmove usr/bin
 		vmove usr/share/man/man1
+
+		for f in ${PKGDESTDIR}/usr/bin/* ${PKGDESTDIR}/usr/share/man/man1/*
+		do
+			mv ${f} $(dirname ${f})/netbsd-$(basename ${f})
+		done
 	}
 }
