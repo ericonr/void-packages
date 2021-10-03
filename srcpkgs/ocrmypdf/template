@@ -1,0 +1,25 @@
+# Template file for 'ocrmypdf'
+pkgname=ocrmypdf
+version=12.5.0
+revision=1
+build_style=python3-module
+#configure_args=""
+#make_build_args=""
+#make_install_args=""
+#conf_files=""
+#make_dirs="/var/log/dir 0755 root root"
+hostmakedepends="python3-setuptools python3-setuptools_scm python3-cffi"
+makedepends=""
+depends="tesseract-ocr ghostscript qpdf leptonica python3-pikepdf python3-reportlab"
+short_desc="Add an OCR text layer to scanned PDF files"
+maintainer="Érico Nogueira <ericonr@disroot.org>"
+license="MPL-2.0"
+homepage="https://ocrmypdf.readthedocs.io/en/latest/"
+#distfiles="https://github.com/jbarlow83/OCRmyPDF/archive/refs/tags/v${version}.tar.gz"
+distfiles="${PYPI_SITE}/o/ocrmypdf/ocrmypdf-${version}.tar.gz"
+checksum=95382f367d255f53930930ee7f7969feb915d5c3a2df2f44c5ecbebad05404b9
+
+post_patch() {
+	vsed -e '/setuptools_scm_git_archive/d' -i setup.cfg
+	vsed -e '/setuptools_scm_git_archive/d' -i setup.py
+}
