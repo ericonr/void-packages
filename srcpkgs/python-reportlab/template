@@ -1,7 +1,8 @@
 # Template file for 'python-reportlab'
+# needs to be moved to py3 only
 pkgname=python-reportlab
-version=3.5.42
-revision=3
+version=3.6.1
+revision=1
 wrksrc="reportlab-${version}"
 build_style=python-module
 hostmakedepends="python-setuptools python3-setuptools freetype-devel"
@@ -12,7 +13,7 @@ maintainer="Alessio Sergi <al3hex@gmail.com>"
 license="BSD-3-Clause"
 homepage="https://www.reportlab.com/"
 distfiles="${PYPI_SITE}/r/reportlab/reportlab-${version}.tar.gz"
-checksum=9c21f202697a6cea57b9d716288fc919d99cbabeb30222eebfc7ff77eac32744
+checksum=68f9324000cfc5570b5a59a92306691b5d655078a399f20bc72c2581fe903261
 
 if [ "$CROSS_BUILD" ]; then
 	hostmakedepends+=" ${makedepends}"
