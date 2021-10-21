@@ -1,0 +1,54 @@
+# Template file for 'curl'
+pkgname=curl-tiny
+version=7.80.0
+revision=1
+wrksrc=curl-${version}
+build_style=gnu-configure
+configure_args="--enable-threaded-resolver --enable-ipv6 --with-bearssl
+ --with-ca-bundle=/etc/ssl/certs/ca-certificates.crt
+ ac_cv_path_NROFF=/usr/bin/mandoc ac_cv_sizeof_off_t=8
+ --disable-manual
+ --disable-versioned-symbols
+ --disable-libcurl-option
+ --enable-symbol-hiding"
+hostmakedepends="perl pkg-config mdocml"
+makedepends="bearssl-devel zlib-devel"
+depends="ca-certificates"
+short_desc="Client that groks URLs"
+maintainer="Orphaned <orphan@voidlinux.org>"
+license="MIT"
+homepage="https://curl.haxx.se"
+changelog="https://curl.haxx.se/changes.html#${version//./_}"
+distfiles="${homepage}/download/curl-${version}.tar.bz2"
+checksum=dd0d150e49cd950aff35e16b628edf04927f0289df42883750cf952bb858189c
+replaces="curl>=0"
+provides="curl-${version}_${revision}"
+
+CFLAGS="-Os -ffunction-sections -fdata-sections -fno-unwind-tables -fno-asynchronous-unwind-tables -flto"
+LDFLAGS="-Wl,-s -Wl,-Bsymbolic -Wl,--gc-sections"
+
+libcurl-tiny_package() {
+	short_desc="Multiprotocol file transfer library"
+	replaces="libcurl>=0"
+	provides="libcurl-${version}_${revision}"
+	pkg_install() {
+		vmove "usr/lib/*.so.*"
+	}
+}
+
+libcurl-tiny-devel_package() {
+	depends="${makedepends} libcurl>=${version}_${revision}"
+	short_desc="Multiprotocol file transfer library - development files"
+	replaces="libcurl-devel>=0"
+	provides="libcurl-devel-${version}_${revision}"
+	pkg_install() {
+		vmove usr/bin/curl-config
+		vmove "usr/share/man/man1/curl-config*"
+		vmove usr/share/man/man3
+		vmove usr/share/aclocal
+		vmove usr/include
+		vmove "usr/lib/*.a"
+		vmove "usr/lib/*.so"
+		vmove usr/lib/pkgconfig
+	}
+}
