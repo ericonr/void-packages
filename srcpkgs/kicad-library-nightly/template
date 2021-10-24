@@ -1,0 +1,13 @@
+# Template file for 'kicad-library-nightly'
+pkgname=kicad-library-nightly
+# kicad commit short hash
+_commit_short=927b633c01
+version="5.99.0.1.g${_commit_short}"
+revision=1
+build_style=meta
+depends="kicad-footprints-nightly>=${version} kicad-packages3D-nightly>=${version}
+ kicad-symbols-nightly>=${version} kicad-templates-nightly>=${version}"
+short_desc="Kicad libraries - nightly edition"
+maintainer="classabbyamp <dev@kb6.ee>"
+license="CC-BY-SA-4.0"
+homepage="http://kicad.org"

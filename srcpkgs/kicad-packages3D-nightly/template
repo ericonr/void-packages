@@ -1,0 +1,18 @@
+# Template file for 'kicad-packages3D-nightly'
+_pkgname=kicad-packages3D
+pkgname=kicad-packages3D-nightly
+_commit=a675312deeb94a0f41a734c95b39749692d68b46
+# kicad commit short hash
+_commit_short=927b633c01
+version="5.99.0.1.g${_commit_short}"
+revision=1
+wrksrc="${_pkgname}-${_commit}"
+build_style=cmake
+configure_args="-DCMAKE_INSTALL_PREFIX=/usr/lib/kicad-nightly -DKICAD_DATA=/usr/share/kicad-nightly"
+depends="kicad-nightly"
+short_desc="Kicad 3D model libraries - nightly edition"
+maintainer="classabbyamp <dev@kb6.ee>"
+license="CC-BY-SA-4.0"
+homepage="http://kicad.org"
+distfiles="https://gitlab.com/kicad/libraries/${_pkgname}/-/archive/${_commit}/${_pkgname}-${_commit}.tar.gz"
+checksum=16ae1261dbcdfc6eb2272c9a0a185d4a051794979e403ce05abd9a0fe514c34b

@@ -1,0 +1,18 @@
+# Template file for 'kicad-symbols-nightly'
+_pkgname=kicad-symbols
+pkgname=kicad-symbols-nightly
+_commit=5e9614478a60e3cdc93e04f016a836c24661ab98
+# kicad commit short hash
+_commit_short=927b633c01
+version="5.99.0.1.g${_commit_short}"
+revision=1
+wrksrc="${_pkgname}-${_commit}"
+build_style=cmake
+configure_args="-DCMAKE_INSTALL_PREFIX=/usr/lib/kicad-nightly -DKICAD_DATA=/usr/share/kicad-nightly"
+depends="kicad-nightly"
+short_desc="Kicad symbol libraries - nightly edition"
+maintainer="classabbyamp <dev@kb6.ee>"
+license="CC-BY-SA-4.0"
+homepage="http://kicad.org"
+distfiles="https://gitlab.com/kicad/libraries/${_pkgname}/-/archive/${_commit}/${_pkgname}-${_commit}.tar.gz"
+checksum=b3b09f72c2d13d8078eeff872858174d0862b93f6df683fbd334c24df87363dd

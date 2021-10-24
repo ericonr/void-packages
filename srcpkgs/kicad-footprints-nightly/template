@@ -1,0 +1,23 @@
+# Template file for 'kicad-footprints-nightly'
+_pkgname=kicad-footprints
+pkgname=kicad-footprints-nightly
+_commit=8125124db009e6b85f3d2ad0946802d86aa11e91
+# kicad commit short hash
+_commit_short=927b633c01
+version="5.99.0.1.g${_commit_short}"
+revision=1
+wrksrc="${_pkgname}-${_commit}"
+build_style=cmake
+configure_args="-DCMAKE_INSTALL_PREFIX=/usr/lib/kicad-nightly -DKICAD_DATA=/usr/share/kicad-nightly"
+depends="kicad-nightly"
+short_desc="Kicad footprint libraries - nightly edition"
+maintainer="classabbyamp <dev@kb6.ee>"
+license="CC-BY-SA-4.0"
+homepage="http://kicad.org"
+distfiles="https://gitlab.com/kicad/libraries/${_pkgname}/-/archive/${_commit}/${_pkgname}-${_commit}.tar.gz"
+checksum=deb06218c4eb3975294a29ba8efce03fafaa8d09b8c74c7929e63e72ef464e26
+
+post_install() {
+	# otherwise KiCad will complain about a missing library when launched
+	touch $DESTDIR/usr/share/kicad-nightly/footprints/Connector_Multicomp.pretty/.empty
+}

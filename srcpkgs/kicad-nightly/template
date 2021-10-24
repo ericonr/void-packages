@@ -1,0 +1,76 @@
+# Template file for 'kicad-nightly'
+_pkgname=kicad
+pkgname="${_pkgname}-nightly"
+_commit=927b633c014116c8e33705328407a1c99e4cd1d7
+_commit_short=927b633c01
+version="5.99.0.1.g${_commit_short}"
+revision=1
+wrksrc="${_pkgname}-${_commit}"
+build_style=cmake
+build_helper=cmake-wxWidgets-gtk3
+configure_args="-DKICAD_BUILD_VERSION=${version}
+ -DCMAKE_INSTALL_PREFIX=/usr/lib/kicad-nightly
+ -DCMAKE_INSTALL_DATADIR=/usr/share/kicad-nightly
+ -DCMAKE_INSTALL_DOCDIR=/usr/share/doc/kicad-nightly
+ -DCMAKE_INSTALL_LIBDIR=/usr/lib/kicad-nightly/lib
+ -DCMAKE_EXECUTABLE_SUFFIX=-nightly
+ -DKICAD_DATA=/usr/share/kicad-nightly
+ -DKICAD_SCRIPTING=ON
+ -DKICAD_SCRIPTING_MODULES=ON
+ -DKICAD_SCRIPTING_WXPYTHON=ON
+ -DKICAD_SCRIPTING_ACTION_MENU=ON
+ -DBUILD_GITHUB_PLUGIN=ON
+ -DKICAD_USE_OCE=OFF
+ -DKICAD_SCRIPTING_PYTHON3=ON
+ -DKICAD_SCRIPTING_WXPYTHON_PHOENIX=ON
+ -DwxWidgets_CONFIG_EXECUTABLE=$WX_CONFIG
+ -DKICAD_USE_OCC=$(vopt_if occt ON OFF)
+ -DKICAD_SPICE=$(vopt_if spice ON OFF)"
+hostmakedepends="pkg-config swig wxWidgets-gtk3-devel python3"
+makedepends="wxWidgets-gtk3-devel wxPython4 python3-devel glew-devel cairo-devel
+ openssl-devel boost-devel libcurl-devel glm libgomp-devel gtk+3-devel
+ $(vopt_if occt occt-devel) $(vopt_if spice ngspice-devel)"
+depends="wxPython4"
+short_desc="Electronic schematic and PCB design software - nightly edition"
+maintainer="classabbyamp <dev@kb6.ee>"
+license="GPL-3.0-or-later"
+homepage="http://kicad.org"
+distfiles="https://gitlab.com/kicad/code/${_pkgname}/-/archive/${_commit}/${_pkgname}-${_commit}.tar.gz"
+checksum=95005b8f76743ea6115057077a97ba4d7b6a1362d3053b620e2136ae7988d98b
+python_version=3
+
+build_options="spice occt"
+build_options_default="spice occt"
+desc_option_spice="Enable support for SPICE simulation"
+desc_option_occt="Enable support for 3D STEP models"
+
+if [ "$CROSS_BUILD" ]; then
+	hostmakedepends+=" wxPython4"
+	configure_args+=" -DPYTHON_DEST=/${py3_sitelib}
+	-DwxWidgets_CONFIG_OPTIONS='--prefix=${XBPS_CROSS_BASE}'"
+fi
+
+post_install() {
+	vmkdir usr/share/applications
+	programs=$(ls "$DESTDIR/usr/share/kicad-nightly/applications" | sed -s 's/\.desktop//g')
+	for prog in $programs; do
+		sed -i \
+			-e 's/^Exec=\([^ ]*\)\(.*\)$/Exec=\1-nightly\2/g' \
+			-e 's/^Name=\(.*\)$/Name=\1 Nightly/g' \
+			"$DESTDIR/usr/share/kicad-nightly/applications/$prog.desktop"
+		ln -sv "../kicad-nightly/applications/$prog.desktop" \
+			"$DESTDIR/usr/share/applications/${prog}-nightly.desktop"
+	done
+
+	vinstall ${FILESDIR}/kicad-nightly.env 644 usr/share/kicad-nightly
+
+	vmkdir usr/bin
+	(cd "$DESTDIR/usr/lib/kicad-nightly/bin" && ls | grep -v '\.kiface') | while read prog; do
+		cat > "$DESTDIR/usr/bin/$prog-nightly" <<EOF
+#!/bin/sh
+. /usr/share/kicad-nightly/kicad-nightly.env
+exec /usr/lib/kicad-nightly/bin/$prog "\$@"
+EOF
+		chmod +x "$DESTDIR/usr/bin/$prog-nightly"
+	done
+}

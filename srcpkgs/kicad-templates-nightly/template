@@ -1,0 +1,18 @@
+# Template file for 'kicad-templates-nightly'
+_pkgname=kicad-templates
+pkgname=kicad-templates-nightly
+_commit=8c9ff3dadb9c75cf2932f11c09a46c0c9d84784b
+# kicad commit short hash
+_commit_short=927b633c01
+version="5.99.0.1.g${_commit_short}"
+revision=1
+wrksrc="${_pkgname}-${_commit}"
+build_style=cmake
+configure_args="-DCMAKE_INSTALL_PREFIX=/usr/lib/kicad-nightly -DKICAD_DATA=/usr/share/kicad-nightly"
+depends="kicad-nightly"
+short_desc="Kicad templates - nightly edition"
+maintainer="classabbyamp <dev@kb6.ee>"
+license="CC-BY-SA-4.0"
+homepage="http://kicad.org"
+distfiles="https://gitlab.com/kicad/libraries/${_pkgname}/-/archive/${_commit}/${_pkgname}-${_commit}.tar.gz"
+checksum=ec9f2e400763a46573b7991c4cb67db0683de2cbd2f3a64b663480b6b24d36e2
