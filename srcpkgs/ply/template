@@ -1,0 +1,27 @@
+# Template file for 'ply'
+pkgname=ply
+version=2.1.1
+revision=1
+archs="x86_64* aarch64* arm* ppc*"
+build_style=gnu-configure
+hostmakedepends="automake libtool bison"
+makedepends=""
+depends=""
+short_desc="Dynamic Tracing in Linux"
+maintainer="Érico Nogueira <ericonr@disroot.org>"
+license="GPL-2.0-only"
+homepage="https://github.com/iovisor/ply"
+distfiles="https://github.com/iovisor/ply/archive/refs/tags/${version}.tar.gz"
+checksum=cecf0913c65027750ac3272e936110c9f843435938f9ca2edbc34e99ba6c00e2
+
+if [ "$XBPS_TARGET_LIBC" = musl ]; then
+	makedepends+=" musl-legacy-compat"
+fi
+
+post_patch() {
+	vsed -i "s/m4_esyscmd_s(git describe --always --dirty)/${version}/" configure.ac
+}
+
+pre_configure() {
+	autoreconf -fi
+}
