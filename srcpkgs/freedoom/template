@@ -1,0 +1,18 @@
+# Template file for 'freedoom'
+pkgname=freedoom
+version=0.12.1
+revision=1
+build_style=gnu-makefile
+make_install_args="prefix=/usr"
+#create_wrksrc=yes
+hostmakedepends="python3-Pillow deutex asciidoc ruby-asciidoctor"
+makedepends=""
+depends=""
+short_desc="Entirely free software game based on the Doom engine"
+maintainer="Érico Nogueira <ericonr@disroot.org>"
+license="BSD-3-Clause"
+homepage="https://freedoom.github.io/"
+# use ready from https://freedoom.github.io/download.html
+# or follow alpine? https://git.alpinelinux.org/aports/tree/testing/freedoom/APKBUILD (wrong license btw)
+distfiles="https://github.com/freedoom/freedoom/releases/download/v${version}/freedoom-${version}.tar.xz"
+checksum=bad733695664c699fc7f02c833916c889b080fadc3b503c40f0aaba3bf637380
