@@ -1,0 +1,21 @@
+# Template file for 'palisade-signature'
+pkgname=palisade-signature
+version=2021.06.02
+revision=1
+_commit=3f909b55d98fd8c38593319e1d06df1c682a4089
+wrksrc=${pkgname}-${_commit}
+build_style=cmake
+configure_args="-DCMAKE_BUILD_TYPE=RelWithDebInfo
+ -DBUILD_UNITTESTS=OFF -DBUILD_BENCHMARKS=OFF -DGIT_SUBMOD_AUTO=OFF"
+make_cmd=make
+hostmakedepends="git"
+makedepends="libgomp-devel palisade"
+depends=""
+short_desc="Digital Signature functionality for use with PALISADE"
+maintainer="Érico Nogueira <erico.erc@gmail.com>"
+license="GPL-3.0-or-later"
+homepage="https://gitlab.com/palisade/palisade-signature"
+distfiles="https://gitlab.com/palisade/palisade-signature/-/archive/${_commit}/palisade-signature-${_commit}.tar.gz"
+checksum=63368733ccc31d36688b2adc8009fe810372e64623a2eb30f5cca5f3866b8d70
+
+export CMAKE_GENERATOR="Unix Makefiles"
