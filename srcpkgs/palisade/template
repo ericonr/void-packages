@@ -1,0 +1,20 @@
+# Template file for 'palisade'
+pkgname=palisade
+version=1.11.5
+revision=1
+wrksrc=palisade-release-v${version}
+build_style=cmake
+configure_args="-DCMAKE_BUILD_TYPE=RelWithDebInfo
+ -DBUILD_UNITTESTS=OFF -DBUILD_BENCHMARKS=OFF -DGIT_SUBMOD_AUTO=OFF"
+make_cmd=make
+hostmakedepends="git autoconf"
+makedepends="libgomp-devel cereal"
+depends="cereal"
+short_desc="General lattice cryptography library"
+maintainer="Érico Nogueira <erico.erc@gmail.com>"
+license="GPL-3.0-or-later"
+homepage="https://gitlab.com/palisade/palisade-release"
+distfiles="https://gitlab.com/palisade/palisade-release/-/archive/v${version}/palisade-release-v${version}.tar.gz"
+checksum=dc7282e6425a2d066f076f8f410362105d5894d6b260be713abfbf135d562b9f
+
+export CMAKE_GENERATOR="Unix Makefiles"
