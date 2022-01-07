@@ -1,6 +1,6 @@
 # Template file for 'curl'
 pkgname=curl-tiny
-version=7.80.0
+version=7.84.0
 revision=1
 wrksrc=curl-${version}
 build_style=gnu-configure
@@ -20,7 +20,7 @@ license="MIT"
 homepage="https://curl.haxx.se"
 changelog="https://curl.haxx.se/changes.html#${version//./_}"
 distfiles="${homepage}/download/curl-${version}.tar.bz2"
-checksum=dd0d150e49cd950aff35e16b628edf04927f0289df42883750cf952bb858189c
+checksum=702fb26e73190a3bd77071aa146f507b9817cc4dfce218d2ab87f00cd3bc059d
 replaces="curl>=0"
 provides="curl-${version}_${revision}"
 
