@@ -5,7 +5,7 @@ revision=2
 build_style=meson
 build_helper="gir qemu"
 configure_args="-Dglib=enabled -Dfreetype=enabled -Dcairo=enabled -Dicu=enabled
- -Dgraphite=enabled -Dintrospection=enabled"
+ -Dgraphite=enabled -Dintrospection=enabled -Ddefault_library=both"
 hostmakedepends="glib-devel pkg-config gtk-doc"
 makedepends="cairo-devel graphite-devel icu-devel libxml2"
 short_desc="OpenType text shaping engine"
@@ -33,6 +33,7 @@ harfbuzz-devel_package() {
 		vmove usr/lib/pkgconfig
 		vmove usr/lib/cmake
 		vmove "usr/lib/*.so"
+		vmove "usr/lib/*.a"
 		vmove usr/share/gir-1.0
 		vmove usr/share/gtk-doc
 	}
