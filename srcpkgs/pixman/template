@@ -1,12 +1,12 @@
 # Template file for 'pixman'
 pkgname=pixman
 version=0.44.0
-revision=1
+revision=2
 build_style=meson
 # gtk is only necessary for demos, disabled to avoid dependency loop
 # openmp is only used in demos and tests, and things still test without it
 configure_args="-Dgnu-inline-asm=enabled -Dlibpng=enabled -Drvv=disabled
- -Dopenmp=disabled -Dgtk=disabled"
+ -Dopenmp=disabled -Dgtk=disabled -Ddefault_library=both"
 hostmakedepends="pkg-config perl"
 makedepends="libpng-devel"
 short_desc="Library of low-level pixel manipulation routines"
@@ -30,5 +30,6 @@ pixman-devel_package() {
 		vmove usr/include
 		vmove usr/lib/pkgconfig
 		vmove "usr/lib/*.so"
+		vmove "usr/lib/*.a"
 	}
 }
