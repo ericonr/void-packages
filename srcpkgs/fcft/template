@@ -5,7 +5,7 @@ revision=1
 wrksrc=$pkgname
 build_style=meson
 configure_args="-Drun-shaping=$(vopt_if textshaping enabled disabled)
- -Ddocs=enabled"
+ -Ddocs=enabled -Ddefault_library=both"
 hostmakedepends="pkg-config scdoc"
 makedepends="fontconfig-devel freetype-devel pixman-devel tllist
  $(vopt_if textshaping harfbuzz-devel)
@@ -33,6 +33,7 @@ fcft-devel_package() {
 		vmove usr/include
 		vmove usr/lib/pkgconfig
 		vmove "usr/lib/*.so"
+		vmove "usr/lib/*.a"
 		vmove usr/share/doc
 		vmove usr/share/man/man3
 
