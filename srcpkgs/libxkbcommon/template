@@ -1,12 +1,13 @@
 # Template file for 'libxkbcommon'
 pkgname=libxkbcommon
 version=1.8.0
-revision=1
+revision=2
 build_style=meson
 # b_ndebug=false is needed to pass the test suite, as it relies on side effects
 # in the arguments of assert calls.
 configure_args="-Denable-x11=true -Denable-docs=false
- -Denable-wayland=true -Denable-xkbregistry=true -Db_ndebug=false"
+ -Denable-wayland=true -Denable-xkbregistry=true -Db_ndebug=false
+ -Ddefault_library=both"
 hostmakedepends="pkg-config bison wayland-protocols wayland-devel"
 makedepends="xkeyboard-config libxcb-devel wayland-devel wayland-protocols
  xorgproto libxml2-devel"
@@ -47,6 +48,7 @@ libxkbcommon-devel_package() {
 		vmove usr/include
 		vmove usr/lib/pkgconfig
 		vmove "usr/lib/*.so"
+		vmove "usr/lib/*.a"
 	}
 }
 
