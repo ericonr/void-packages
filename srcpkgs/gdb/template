@@ -5,13 +5,14 @@ revision=1
 build_style=gnu-configure
 pycompile_dirs="/usr/share/gdb/python"
 configure_args="--disable-werror --disable-nls --with-system-readline
- --with-system-gdbinit=/etc/gdb/gdbinit --with-system-zlib
+ --with-system-gdbinit=/etc/gdb/gdbinit --with-system-zlib --with-zstd
+ $(vopt_if static --disable-shared)
  $(vopt_enable gdbserver) $(vopt_if multiarch --enable-targets=all)
- $(vopt_if static 'CFLAGS=-static CXXFLAGS=-static LDFLAGS=-static')
  $(vopt_with guile) $(vopt_if python --with-python=/usr/bin/python3)
  $(vopt_with debuginfod)"
+#make_build_args=""
 hostmakedepends="pkg-config texinfo $(vopt_if python python3-devel) $(vopt_if guile guile)"
-makedepends="expat-devel ncurses-devel readline-devel zlib-devel gmp-devel mpfr-devel
+makedepends="expat-devel ncurses-devel readline-devel zlib-devel zstd-devel gmp-devel mpfr-devel
  $(vopt_if debuginfod elfutils-devel) $(vopt_if guile guile-devel)
  $(vopt_if python 'gettext-devel python3-devel')"
 depends="gdb-common>=${version}_${revision}"
@@ -59,6 +60,11 @@ if [ "$build_option_multiarch" ]; then
 	subpackages="gdb-multiarch"
 fi
 subpackages+=" gdb-common"
+
+post_build() {
+	rm gdb/gdb
+	make LDFLAGS=-all-static
+}
 
 post_install() {
 	# resolve conflicts with binutils
