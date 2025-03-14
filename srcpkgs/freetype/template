@@ -5,7 +5,7 @@ revision=1
 build_style=gnu-configure
 configure_args="--enable-freetype-config"
 hostmakedepends="pkg-config"
-makedepends="bzip2-devel libpng-devel brotli-devel"
+makedepends="bzip2-devel libpng-devel $(vopt_if woff2 brotli-devel)"
 short_desc="Font rendering engine and library API"
 maintainer="Orphaned <orphan@voidlinux.org>"
 license="GPL-2.0-or-later, FTL"
@@ -14,6 +14,10 @@ homepage="https://www.freetype.org/"
 # mirrors, causing fetching the distfile to fail.
 distfiles="https://download-mirror.savannah.gnu.org/releases/freetype/freetype-${version}.tar.xz"
 checksum=12991c4e55c506dd7f9b765933e62fd2be2e06d421505d7950a132e4f1bb484d
+
+build_options=woff2
+build_options_default=woff2
+desc_option_woff2="Enable support for WOFF2 fonts"
 
 post_patch() {
 	vsed -i -e "s/%PKG_CONFIG%/pkg-config/" builds/unix/freetype-config.in
